@@ -1,4 +1,10 @@
-export default function rainbowIcon() {
+import { Component } from "solid-js";
+
+interface IconProps {
+  class?: string;
+}
+
+const RainbowIcon: Component<IconProps> = (props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,11 +16,13 @@ export default function rainbowIcon() {
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      class="lucide lucide-rainbow"
+      class={props.class}
     >
       <path d="M22 17a10 10 0 0 0-20 0" />
       <path d="M6 17a6 6 0 0 1 12 0" />
       <path d="M10 17a2 2 0 0 1 4 0" />
     </svg>
   );
-}
+};
+
+export default RainbowIcon;

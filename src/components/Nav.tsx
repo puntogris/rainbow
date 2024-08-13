@@ -1,24 +1,36 @@
-import { useLocation } from "@solidjs/router";
+import { useLocation } from '@solidjs/router';
+import { twMerge } from 'tailwind-merge';
+import RainbowIcon from '../icons/rainbowIcon';
 
 export default function Nav() {
-  const location = useLocation();
-  const active = (path: string) =>
-    path == location.pathname
-      ? "border-sky-600"
-      : "border-transparent hover:border-sky-600";
-  return (
-    <nav class="bg-sky-800">
-      <ul class="container flex items-center p-3 text-gray-200">
-        <li class={`border-b-2 ${active("/")} mx-1.5 sm:mx-6`}>
-          <a href="/">Home</a>
-        </li>
-        <li class={`border-b-2 ${active("/about")} mx-1.5 sm:mx-6`}>
-          <a href="/about">About</a>
-        </li>
-        <li class={`border-b-2 ${active("/colors")} mx-1.5 sm:mx-6`}>
-          <a href="/about">Colors</a>
-        </li>
-      </ul>
-    </nav>
-  );
+	const location = useLocation();
+
+	const active = (path: string) => path == location.pathname;
+
+	const navItems = [
+		{ name: 'Home', path: '/' },
+		{ name: 'Tailwind Nearest', path: '/tailwind' },
+		{ name: 'Colors Comparator', path: '/compare' }
+	];
+	return (
+		<nav class="relative overflow-hidden p-2">
+			<div class="absolute inset-0 bg-gradient-to-r from-red-500 via-blue-500 to-purple-500" />
+
+			<div class="absolute inset-0 bg-white/10 backdrop-blur-sm" />
+
+			<div class="relative flex justify-center">
+				{navItems.map((item, index) => (
+					<a
+						href={item.path}
+						class={twMerge(
+							'mx-1 flex gap-2 rounded px-4 py-1.5 text-sm font-medium text-white transition-colors duration-200',
+							active(item.path) ? 'bg-white/10' : 'hover:bg-white/10'
+						)}
+					>
+						{item.name === 'Home' ? <RainbowIcon class="h-5 w-5" /> : item.name}
+					</a>
+				))}
+			</div>
+		</nav>
+	);
 }
