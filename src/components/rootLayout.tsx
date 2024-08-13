@@ -1,11 +1,11 @@
 import { Suspense } from 'solid-js';
-import Nav from '../components/nav';
+import RootNav from './rootNav';
 import '../app.css';
 
 export default function RootLayout(props) {
 	return (
 		<div class="flex min-h-screen flex-col">
-			<Nav />
+			<RootNav />
 			<Suspense>{props.children}</Suspense>
 		</div>
 	);
