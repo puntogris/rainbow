@@ -14,7 +14,7 @@ export default function Nav() {
 	];
 	return (
 		<nav class="relative overflow-hidden p-2">
-			<div class="absolute inset-0 bg-gradient-to-r from-red-500 via-blue-500 to-purple-500" />
+			<div class="absolute inset-0 bg-gradient-to-r from-rose-500 via-blue-500 to-purple-500" />
 
 			<div class="absolute inset-0 bg-white/10 backdrop-blur-sm" />
 
