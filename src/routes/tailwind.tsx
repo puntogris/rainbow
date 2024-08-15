@@ -1,6 +1,6 @@
 import { createEffect, createSignal } from 'solid-js';
 import tailwindColors from '~/data/tailwind-colors.json';
-import { DeltaE00Calculator } from '~/lib/delta-calculator';
+import { DeltaE00Calculator } from '~/lib/deltaE00Calculator';
 import CopyIcon from '~/icons/copyIcon';
 import PasteIcon from '~/icons/pasteIcon';
 import type { TailwindColor } from '~/lib/tailwindColor';

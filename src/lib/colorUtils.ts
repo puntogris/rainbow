@@ -13,9 +13,9 @@ function isLightColor(color: string) {
 	return luminance > 186;
 }
 
-function getRandomTailwindColor() {
+function getRandomColor() {
 	const randomColor = tailwindColors[Math.floor(Math.random() * tailwindColors.length)];
 	return randomColor.hex;
 }
 
-export { isLightColor, getRandomTailwindColor };
+export { isLightColor, getRandomColor };
