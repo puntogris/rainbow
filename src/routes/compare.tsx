@@ -126,8 +126,10 @@ function ColorButtonGroup(props: {
 			<button
 				onClick={props.onRemove}
 				class={twMerge(
-					'rounded p-2 hover:bg-white/10',
-					isLightColor(props.color.hex) ? 'text-black' : 'text-white'
+					'rounded p-2',
+					isLightColor(props.color.hex)
+						? 'text-black hover:bg-black/5'
+						: 'text-white hover:bg-white/10'
 				)}
 			>
 				<XIcon class="h-6 w-6" />
@@ -135,8 +137,10 @@ function ColorButtonGroup(props: {
 			<button
 				onClick={props.onCopy}
 				class={twMerge(
-					'rounded p-2 hover:bg-white/10',
-					isLightColor(props.color.hex) ? 'text-black' : 'text-white'
+					'rounded p-2',
+					isLightColor(props.color.hex)
+						? 'text-black hover:bg-black/5'
+						: 'text-white hover:bg-white/10'
 				)}
 			>
 				<CopyIcon class="h-6 w-6" />
@@ -144,8 +148,10 @@ function ColorButtonGroup(props: {
 			<label
 				for={`picker_${props.color.hex}`}
 				class={twMerge(
-					'rounded p-2 hover:bg-white/10',
-					isLightColor(props.color.hex) ? 'text-black' : 'text-white'
+					'rounded p-2',
+					isLightColor(props.color.hex)
+						? 'text-black hover:bg-black/5'
+						: 'text-white hover:bg-white/10'
 				)}
 			>
 				<PaletteIcon class="h-6 w-6" />
