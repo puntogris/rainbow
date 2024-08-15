@@ -5,6 +5,7 @@ import PaletteIcon from '~/icons/paletteIcon';
 import CopyIcon from '~/icons/copyIcon';
 import { twMerge } from 'tailwind-merge';
 import { isLightColor, getRandomColor } from '~/lib/colorUtils';
+import CheckIcon from '~/icons/checkIcon';
 
 export default function Compare() {
 	const [colors, setColors] = createSignal<{ hex: string }[]>([
@@ -121,6 +122,8 @@ function ColorButtonGroup(props: {
 	onCopy: () => void;
 	onUpdate: (value: string) => void;
 }) {
+	const [animatingCoppied, setAnnimatingCoppied] = createSignal(false);
+
 	return (
 		<div class="flex flex-col items-center justify-center gap-3">
 			<button
@@ -135,7 +138,11 @@ function ColorButtonGroup(props: {
 				<XIcon class="h-6 w-6" />
 			</button>
 			<button
-				onClick={props.onCopy}
+				onClick={() => {
+					props.onCopy();
+					setAnnimatingCoppied(true);
+					setTimeout(() => setAnnimatingCoppied(false), 1000);
+				}}
 				class={twMerge(
 					'rounded p-2',
 					isLightColor(props.color.hex)
@@ -143,7 +150,20 @@ function ColorButtonGroup(props: {
 						: 'text-white hover:bg-white/10'
 				)}
 			>
-				<CopyIcon class="h-6 w-6" />
+				<div class="relative flex items-center">
+					<CheckIcon
+						class={twMerge(
+							`h-6 w-6 transition-opacity`,
+							animatingCoppied() ? 'opacity-100' : 'opacity-0'
+						)}
+					/>
+					<CopyIcon
+						class={twMerge(
+							'absolute h-6 w-6 transition-opacity',
+							animatingCoppied() ? 'opacity-0' : 'opacity-100'
+						)}
+					/>
+				</div>{' '}
 			</button>
 			<label
 				for={`picker_${props.color.hex}`}
