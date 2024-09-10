@@ -2,10 +2,9 @@ import { createSignal, Index } from 'solid-js';
 import PlusIcon from '~/icons/plusIcon';
 import XIcon from '~/icons/xIcon';
 import PaletteIcon from '~/icons/paletteIcon';
-import CopyIcon from '~/icons/copyIcon';
 import { twMerge } from 'tailwind-merge';
 import { isLightColor, getRandomColor } from '~/lib/colorUtils';
-import CheckIcon from '~/icons/checkIcon';
+import CopyButton from '~/components/copyButton';
 
 export default function Compare() {
 	const [colors, setColors] = createSignal<{ hex: string }[]>([
@@ -49,7 +48,7 @@ export default function Compare() {
 
 	return (
 		<main class="flex grow">
-			<div class="grid w-full auto-cols-min grid-flow-col md:auto-cols-fr">
+			<div class="grid w-full grid-cols-2">
 				<Index each={colors()}>
 					{(color, index) => (
 						<div
@@ -68,9 +67,13 @@ export default function Compare() {
 								</div>
 								<input
 									value={color().hex}
+									size={8}
+									maxLength={7}
 									class={twMerge(
 										'w-full rounded-md bg-transparent p-4 text-center text-2xl font-semibold uppercase text-zinc-100 focus:outline-none',
-										isLightColor(color().hex) ? 'text-black' : 'text-white'
+										isLightColor(color().hex)
+											? 'text-black hover:bg-black/5'
+											: 'text-white hover:bg-white/10'
 									)}
 									onInput={(e) => updateColor(e.currentTarget.value, index)}
 								/>
@@ -122,8 +125,6 @@ function ColorButtonGroup(props: {
 	onCopy: () => void;
 	onUpdate: (value: string) => void;
 }) {
-	const [animatingCoppied, setAnnimatingCoppied] = createSignal(false);
-
 	return (
 		<div class="flex flex-col items-center justify-center gap-3">
 			<button
@@ -137,34 +138,7 @@ function ColorButtonGroup(props: {
 			>
 				<XIcon class="h-6 w-6" />
 			</button>
-			<button
-				onClick={() => {
-					props.onCopy();
-					setAnnimatingCoppied(true);
-					setTimeout(() => setAnnimatingCoppied(false), 1000);
-				}}
-				class={twMerge(
-					'rounded p-2',
-					isLightColor(props.color.hex)
-						? 'text-black hover:bg-black/5'
-						: 'text-white hover:bg-white/10'
-				)}
-			>
-				<div class="relative flex items-center">
-					<CheckIcon
-						class={twMerge(
-							`h-6 w-6 transition-opacity`,
-							animatingCoppied() ? 'opacity-100' : 'opacity-0'
-						)}
-					/>
-					<CopyIcon
-						class={twMerge(
-							'absolute h-6 w-6 transition-opacity',
-							animatingCoppied() ? 'opacity-0' : 'opacity-100'
-						)}
-					/>
-				</div>{' '}
-			</button>
+			<CopyButton isLightTheme={isLightColor(props.color.hex)} onClick={() => props.onCopy()} />
 			<label
 				for={`picker_${props.color.hex}`}
 				class={twMerge(
