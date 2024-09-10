@@ -18,7 +18,7 @@ export default function Nav() {
 
 			<div class="absolute inset-0 bg-white/10 backdrop-blur-sm" />
 
-			<div class="relative flex justify-center">
+			<div class="relative flex items-center justify-center">
 				{navItems.map((item, index) => (
 					<a
 						href={item.path}
