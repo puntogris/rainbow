@@ -8,9 +8,9 @@ export default function Nav() {
 	const active = (path: string) => path == location.pathname;
 
 	const navItems = [
-		{ name: 'Home', path: '/' },
-		{ name: 'Tailwind Nearest', path: '/tailwind' },
-		{ name: 'Colors Comparator', path: '/compare' }
+		{ name: 'Home', smallName: 'Home', path: '/' },
+		{ name: 'Tailwind Nearest', smallName: 'Nearest', path: '/tailwind' },
+		{ name: 'Colors Comparator', smallName: 'Comparator', path: '/compare' }
 	];
 	return (
 		<nav class="relative overflow-hidden p-2">
@@ -27,7 +27,14 @@ export default function Nav() {
 							active(item.path) ? 'bg-white/10' : 'hover:bg-white/10'
 						)}
 					>
-						{item.name === 'Home' ? <RainbowIcon class="h-5 w-5" /> : item.name}
+						{item.name === 'Home' ? (
+							<RainbowIcon class="h-5 w-5" />
+						) : (
+							<>
+								<span class="hidden sm:block">{item.name}</span>
+								<span class="block sm:hidden">{item.smallName}</span>
+							</>
+						)}
 					</a>
 				))}
 			</div>

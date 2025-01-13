@@ -27,9 +27,11 @@ export default function Tailwind() {
 	});
 
 	function updateSimilarColor(input: string) {
-		if (input.length > 4 || input.length < 7) {
+		console.log(input);
+		if (input.length !== 7) {
 			return;
 		}
+		console.log('here');
 
 		let closestDelta: number | undefined = undefined;
 		let closestColor: TailwindColor | undefined = undefined;
@@ -52,7 +54,7 @@ export default function Tailwind() {
 	}
 
 	return (
-		<div class="grid grow grid-cols-2">
+		<div class="grid grow max-md:grid-rows-2 md:grid-cols-2">
 			<div
 				class="flex items-center justify-center gap-2 p-2"
 				style={{ 'background-color': original() }}
