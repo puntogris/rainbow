@@ -1,4 +1,4 @@
-import { createEffect, createSignal } from 'solid-js';
+import { createSignal } from 'solid-js';
 import tailwindColors from '~/data/tailwind-colors.json';
 import { DeltaE00Calculator } from '~/lib/deltaE00Calculator';
 import type { TailwindColor } from '~/lib/tailwindColor';
@@ -8,13 +8,16 @@ import CopyButton from '~/components/copyButton';
 import PasteButton from '~/components/pasteButton';
 
 export default function Tailwind() {
-	const [original, setOriginal] = createSignal(tailwindColors[3].hex);
+	const [original, setOriginal] = createSignal(tailwindColors[3].hex.replace('#', ''));
 	const [tailwind, setTailwind] = createSignal(tailwindColors[3]);
+
+	const originalHex = () => '#' + original();
 
 	async function handlePaste() {
 		const text = await navigator.clipboard.readText();
 		if (text) {
-			setOriginal(text);
+			const trimmedText = text.slice(0, 6);
+			updateOriginalColor(trimmedText);
 		}
 	}
 
@@ -22,16 +25,17 @@ export default function Tailwind() {
 		navigator.clipboard.writeText(tailwind().name);
 	}
 
-	createEffect(() => {
-		updateSimilarColor(original());
-	});
-
 	function updateSimilarColor(input: string) {
-		console.log(input);
-		if (input.length !== 7) {
+		if (!input) {
 			return;
 		}
-		console.log('here');
+		if (input.length !== 3 && input.length !== 6) {
+			return;
+		}
+		if (input.length === 3) {
+			input = input[0] + input[0] + input[1] + input[1] + input[2] + input[2];
+		}
+		input = '#' + input;
 
 		let closestDelta: number | undefined = undefined;
 		let closestColor: TailwindColor | undefined = undefined;
@@ -53,25 +57,36 @@ export default function Tailwind() {
 		}
 	}
 
+	function updateOriginalColor(input: string) {
+		input = input.replace('#', '');
+		setOriginal(input);
+		updateSimilarColor(input);
+	}
+
 	return (
 		<div class="grid grow max-md:grid-rows-2 md:grid-cols-2">
 			<div
 				class="flex items-center justify-center gap-2 p-2"
-				style={{ 'background-color': original() }}
+				style={{ 'background-color': originalHex() }}
 			>
-				<input
-					value={original()}
-					size={7}
-					maxLength={7}
+				<div
 					class={twMerge(
-						'rounded bg-transparent p-4 text-center text-2xl font-semibold uppercase outline-none',
-						isLightColor(original())
+						'flex items-center gap-2 rounded bg-transparent p-2 text-center text-2xl font-semibold uppercase',
+						isLightColor(originalHex())
 							? 'text-black hover:bg-black/5'
 							: 'text-white hover:bg-white/10'
 					)}
-					onInput={(e) => setOriginal(e.currentTarget.value)}
-				/>
-				<PasteButton isLightTheme={isLightColor(original())} onClick={() => handlePaste()} />
+				>
+					#
+					<input
+						value={original()}
+						size={6}
+						maxLength={6}
+						class="bg-transparent outline-none"
+						onInput={(e) => updateOriginalColor(e.currentTarget.value)}
+					/>
+				</div>
+				<PasteButton isLightTheme={isLightColor(originalHex())} onClick={() => handlePaste()} />
 			</div>
 			<div
 				class="flex items-center justify-center gap-2 p-2 text-black"
